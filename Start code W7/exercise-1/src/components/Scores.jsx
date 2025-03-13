@@ -1,52 +1,36 @@
-import React from "react";
-import { HTML_RESULTS } from "../data.js";
+import Statistic from "./Statistic";
 
-const CheckScore = (score) => {
-    if (score >= 50) {
-        return <td>{score}</td>;
-    } else {
-        return <td className="warning">{score}</td>;
+export default function Score({courseName, courseResult}){
+    const getScore = (score) => {
+        return score < 50 ? "warning" : "";
     }
-};
+    return (
+        
+        <div className="scores">
+            <h1>{courseName}</h1>
 
-const Scores = () => (
-    <main className="scores-container">
-        <section className="scores">
-            <h1>HTML</h1>
             <table>
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>First name</th>
+                        <th>Last name</th>
                         <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {HTML_RESULTS.map((student, index) => (
+                    {courseResult.map((student, index) => (
                         <tr key={index}>
                             <td>{student.firstName}</td>
                             <td>{student.lastName}</td>
-                            {CheckScore(student.score)}
+                            <td className={getScore(student.score)}>
+                                {student.score}
+                            </td>
                         </tr>
                     ))}
                 </tbody>
-                <div className="foot">
-                    <tfoot>
-                        <tr>
-                            <th>Average</th>
-                            <th>Min</th>
-                            <th>Max</th>
-                        </tr>
-                        <tr>
-                            <td>{(HTML_RESULTS.reduce((acc, student) => acc + student.score, 0) / HTML_RESULTS.length).toFixed(2)}</td>
-                            <td>{Math.min(...HTML_RESULTS.map((student) => student.score))}</td>
-                            <td>{Math.max(...HTML_RESULTS.map((student) => student.score))}</td>
-                        </tr>
-                    </tfoot>
-                </div>
             </table>
-        </section>
-    </main>
-);
-
-export default Scores;
+            <Statistic courseResult={courseResult}/>
+        </div>
+        
+    );
+}
